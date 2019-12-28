@@ -30,6 +30,7 @@ export class AuthenticationService {
         console.log('user >> ', response);
         localStorage.setItem('currentUser', JSON.stringify(response));
         this.currentUserSubject.next(response);
+        window.location.href = window.location.origin + '/index.html';
 
         //    if (response.token.token && response.jwt) {
 
@@ -46,9 +47,10 @@ export class AuthenticationService {
   }
 
   logout() {
-    // remove user from local storage to log user out
+      // remove user from local storage to log user out
     localStorage.removeItem('currentUser');
-    this.currentUserSubject.next(null);
+    //this.currentUserSubject.next(null);
+    window.location.href = window.location.origin + '/giris';
   }
 
 }

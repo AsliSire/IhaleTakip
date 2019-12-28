@@ -1,5 +1,5 @@
 import { BrowserModule } from '@angular/platform-browser';
-import { NgModule } from '@angular/core';
+import { NgModule, LOCALE_ID } from '@angular/core';
 
 import { RadyolojiIslemService } from './entity/service/radyoloji-islem.service';
 import { HttpClientModule } from '@angular/common/http';
@@ -20,6 +20,9 @@ import { DataTablesModule } from 'angular-datatables';
 import { LoginComponent } from './login/login.component';
 import { LogoutComponent } from './logout/logout.component';
 import { HomeComponent } from './home/home.component';
+import { registerLocaleData } from '@angular/common';
+import localeTr from '@angular/common/locales/tr'
+registerLocaleData(localeTr);
 
 @NgModule({
   declarations: [
@@ -54,7 +57,10 @@ import { HomeComponent } from './home/home.component';
     DataTablesModule
     
   ],
-  providers: [RadyolojiIslemService],
+  providers: [
+    {provide: LOCALE_ID, useValue: "tr"},
+    RadyolojiIslemService
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
