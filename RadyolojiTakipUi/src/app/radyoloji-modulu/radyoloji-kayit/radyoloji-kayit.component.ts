@@ -24,6 +24,10 @@ export class RadyolojiKayitComponent implements OnInit {
   ihale_adi: string;
   isValid: boolean = true;
   filtreleme: boolean = false;
+  raportorListesi: any;
+  doktorListesi: any;
+  tarih: string;
+  saat: string;
 
   constructor(private RadyolojiService: RadyolojiIslemService, private router: Router, private app: AppComponent, private authenticationService: AuthenticationService) {
     this.router.routeReuseStrategy.shouldReuseRoute = function () {
@@ -34,6 +38,8 @@ export class RadyolojiKayitComponent implements OnInit {
         this.router.navigated = false;
       }
     });
+    this.tarih = this.app.formatDate(now);
+    this.saat = this.app.hour;
   }
 
   fg_radyolojikayit = new FormGroup({
@@ -53,10 +59,10 @@ export class RadyolojiKayitComponent implements OnInit {
     cihaz_adi: new FormControl(),
     rapor_yazim_tarihi: new FormControl(),
     //rapor_yazan_cari_kodu : new FormControl(),
-    rapor_yazan_cari_ad_unvan: new FormControl("Seçiniz"),
+    rapor_yazan_cari_ad_unvan: new FormControl(),
     rapor_onay_tarihi: new FormControl(),
     //rapor_onay_cari_kodu : new FormControl(),
-    rapor_onay_cari_ad_unvan: new FormControl("Seçiniz")
+    rapor_onay_cari_ad_unvan: new FormControl()
   })
   fg_datefilter = new FormGroup({
     baslangic_tarihi: new FormControl(),
@@ -71,20 +77,22 @@ export class RadyolojiKayitComponent implements OnInit {
 
     if (this.filtreleme == false) { this.GetRadyolojiIslemGunluk(); }
     this.GetIhaleAdi();
+    this.GetDoktorListesi();
+    this.GetRaportorListesi();
 
     this.fg_radyolojikayit.patchValue({
-      cekim_tarihi: this.app.formatDate(now),
-      cekim_saati: this.app.hour,
+      cekim_tarihi: this.tarih,
+      cekim_saati: this.saat,
       ihale_cari_kodu: this.authenticationService.currentUserSubject.value.model.value[0]['ihale_cari_kodu'],
       ihale_cari_ad_unvan: this.authenticationService.currentUserSubject.value.model.value[0]['ihale_cari_ad_unvan'],
       ihale_hastane_cari_kodu: this.authenticationService.currentUserSubject.value.model.value[0]['ihale_hastane_cari_kodu'],
       ihale_hastane_cari_ad_unvan: this.authenticationService.currentUserSubject.value.model.value[0]['ihale_hastane_cari_ad_unvan'],
-      rapor_yazim_tarihi: this.app.formatDate(now),
-      rapor_onay_tarihi: this.app.formatDate(now),
+      rapor_yazim_tarihi: this.tarih,
+      rapor_onay_tarihi: this.tarih,
     })
     this.fg_datefilter.patchValue({
-      baslangic_tarihi: this.app.formatDate(now),
-      bitis_tarihi: this.app.formatDate(now)
+      baslangic_tarihi: this.tarih,
+      bitis_tarihi: this.tarih
     })
     //#region TC KİMLİK NUMARASI GEÇERLİLİK KONTROLÜ
     $(document).ready(function () {
@@ -169,7 +177,7 @@ export class RadyolojiKayitComponent implements OnInit {
     this.RadyolojiService.SaveRadyolojiIslem(ARadyolojiIslem).subscribe(data => {
       if (data == 'ok') {
         console.log('Kayıt Başarılı');
-         const Toast = Swal.mixin({
+        const Toast = Swal.mixin({
           toast: true,
           showConfirmButton: false,
         });
@@ -183,23 +191,23 @@ export class RadyolojiKayitComponent implements OnInit {
         this.router.navigate(["/radyoloji-islem-kayit"]);
       }
     }, error => {
-        Swal.fire(
-          'Kayıt Başarısız',
-          error.error,
-          'error')
-      });
+      Swal.fire(
+        'Kayıt Başarısız',
+        error.error,
+        'error')
+    });
   }
 
-/*   
-//sayfada belli bir elemente scroll etme fonksiyonu.
-//kullanımı: button: (click)="scrollToElement(datatableSection)"
-//          element: #datatableSection 
-
-  scrollToElement(el: HTMLElement): void {
-    console.log(el);
-    el.scrollIntoView();  }
-    
-*/
+  /*   
+  //sayfada belli bir elemente scroll etme fonksiyonu.
+  //kullanımı: button: (click)="scrollToElement(datatableSection)"
+  //          element: #datatableSection 
+  
+    scrollToElement(el: HTMLElement): void {
+      console.log(el);
+      el.scrollIntoView();  }
+      
+  */
 
   formuTemizle() {
     this.fg_radyolojikayit.patchValue({
@@ -211,14 +219,14 @@ export class RadyolojiKayitComponent implements OnInit {
       hasta_tc_no: "",
       hasta_adi: "",
       hasta_soyadi: "",
-      cekim_tarihi: this.app.formatDate(now),
-      cekim_saati: this.app.hour,
+      cekim_tarihi: this.tarih,
+      cekim_saati: this.saat,
       islem_kodu: "",
       islem_adi: "",
       islem_puani: "",
       cihaz_adi: "",
-      rapor_yazim_tarihi: this.app.formatDate(now),
-      rapor_onay_tarihi: this.app.formatDate(now),
+      rapor_yazim_tarihi: this.tarih,
+      rapor_onay_tarihi: this.tarih,
       rapor_yazan_raportor: "",
       rapor_onaylayan_doktor: ""
     })
@@ -239,9 +247,21 @@ export class RadyolojiKayitComponent implements OnInit {
     })
   }
 
+  GetDoktorListesi() {
+    this.RadyolojiService.GetPersonelListesi("DOKTOR").subscribe(data => {
+      this.doktorListesi = data;
+      console.table(this.doktorListesi);
+    })
+  }
+  GetRaportorListesi() {
+    this.RadyolojiService.GetPersonelListesi("RAPORTÖR").subscribe(data => {
+      this.raportorListesi = data;
+      console.table(this.raportorListesi);
+    })
+  }
 
   GetRadyolojiIslemGunluk() {
-    this.RadyolojiService.GetRadyolojiIslemGunluk(this.app.formatDate(now)).subscribe(
+    this.RadyolojiService.GetRadyolojiIslemGunluk(this.tarih).subscribe(
       data => {
         console.table('GetRadyolojiIslemGunluk=', data);
         this.RadyolojiListe = data;
@@ -294,7 +314,8 @@ export class RadyolojiKayitComponent implements OnInit {
           var islem_puani = data[0]['islem_puani'];
           var cihaz_adi = data[0]['cihaz_adi'];
           var rapor_tarihi = data[0]['rapor_tarihi'];
-          var rapor_yazan_doktor = data[0]['rapor_yazan_doktor'];
+          var rapor_yazan_raportor = data[0]['rapor_yazan_cari_ad_unvan'];
+          var rapor_onaylayan_doktor = data[0]['rapor_onay_cari_ad_unvan'];
 
           this.fg_radyolojikayit.patchValue({
             ihale_cari_kodu: ihale_cari_kodu,
@@ -312,7 +333,8 @@ export class RadyolojiKayitComponent implements OnInit {
             islem_puani: islem_puani,
             cihaz_adi: cihaz_adi,
             rapor_tarihi: this.app.formatDate(rapor_tarihi),
-            rapor_yazan_doktor: rapor_yazan_doktor
+            rapor_yazan_cari_ad_unvan: rapor_yazan_raportor,
+            rapor_onay_cari_ad_unvan: rapor_onaylayan_doktor
           })
         }
       )

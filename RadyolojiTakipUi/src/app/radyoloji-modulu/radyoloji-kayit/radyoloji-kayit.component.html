@@ -177,8 +177,7 @@
                                 formControlName="rapor_yazan_cari_ad_unvan" #rapor_yazan_cari_ad_unvan type="text"
                                 class="input-sm form-control thresold-i" autocomplete="off">
                             <datalist id="raportor">
-                                <option>Seçiniz</option>
-                                <option>{{Veri_gelecek}}</option>
+                                <option *ngFor="let personel of raportorListesi">{{personel.ad_soyad}}</option>
                             </datalist>
                         </div>
                     </div>
@@ -197,12 +196,11 @@
                     <label class="col-sm-12 col-lg-4 col-md-4 col-form-label">Raporu Onaylayan Doktor</label>
                     <div class="col-sm-12 col-lg-6 col-md-6">
                         <div class="input-group input-group-primary input-group-sm">
-                            <input list="raportor" id="rapor_onay_cari_ad_unvan" name="rapor_onay_cari_ad_unvan"
-                            formControlName="rapor_onay_cari_ad_unvan" #rapor_onay_cari_ad_unvan type="text"
-                            class="input-sm form-control thresold-i" autocomplete="off">
-                            <datalist id="raportor">
-                                <option>Seçiniz</option>
-                                <option>{{Veri_gelecek}}</option>
+                            <input list="doktor" id="rapor_onay_cari_ad_unvan" name="rapor_onay_cari_ad_unvan"
+                                formControlName="rapor_onay_cari_ad_unvan" #rapor_onay_cari_ad_unvan type="text"
+                                class="input-sm form-control thresold-i" autocomplete="off">
+                            <datalist id="doktor">
+                                <option *ngFor="let personel of doktorListesi">{{personel.ad_soyad}}</option>
                             </datalist>
                         </div>
                     </div>
@@ -219,7 +217,7 @@
                         <button mat-raised-button color="error" id="islem_temizle" name="islem_kaydet" type="button"
                             class="button-sm form-control thresold-i" (click)="formuTemizle()">Temizle</button>
                     </div>
-                    <div class="col-sm-4 col-lg-4 col-md-4">                        
+                    <div class="col-sm-4 col-lg-4 col-md-4">
                         <button mat-raised-button color="warn" id="islem_kaydet" name="islem_kaydet" type="submit"
                             class="button-sm form-control thresold-i">Kaydet</button>
                     </div>
@@ -248,39 +246,40 @@
 </form>
 <br />
 <div style="overflow-x: scroll;">
-<table datatable [dtOptions]="dtOptions" [dtTrigger]="dtTrigger" class="row-border hover">
-    <thead>
-        <tr>
-            <th></th>
-            <th>Referans No</th>
-            <th>İhale Cari Kodu</th>
-            <th>Hasta Adı</th>
-            <th>Çekim Tarihi</th>
-            <th>İşlem Adı</th>
-        </tr>
-    </thead>
-    <tbody>
-        <tr *ngFor="let item of RadyolojiListe ">
-            <td>
-                <mat-icon color="primary" (click)="KayitDuzenle(item.ref_no)" style="cursor: pointer">edit</mat-icon>
-                <mat-icon color="warn" (click)="KayitSil(item.ref_no)" style="cursor: pointer">delete</mat-icon>
-            </td>
-            <td>{{item.ref_no}}</td>
-            <td>{{item.ihale_cari_kodu}}</td>
-            <td>{{item.hasta_adi}}</td>
-            <td>{{item.cekim_tarihi | date:'dd/MM/yyyy' }}</td>
-            <td>{{item.islem_adi}}</td>
-        </tr>
-    </tbody>
-    <tfoot>
-        <tr>
-            <th></th>
-            <th>Referans No</th>
-            <th>İhale Cari Kodu</th>
-            <th>Hasta Adı</th>
-            <th>Çekim Tarihi</th>
-            <th>İşlem Adı</th>
-        </tr>
-    </tfoot>
-</table>
+    <table datatable [dtOptions]="dtOptions" [dtTrigger]="dtTrigger" class="row-border hover">
+        <thead>
+            <tr>
+                <th></th>
+                <th>Referans No</th>
+                <th>İhale Cari Kodu</th>
+                <th>Hasta Adı</th>
+                <th>Çekim Tarihi</th>
+                <th>İşlem Adı</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let item of RadyolojiListe ">
+                <td>
+                    <mat-icon color="primary" (click)="KayitDuzenle(item.ref_no)" style="cursor: pointer">edit
+                    </mat-icon>
+                    <mat-icon color="warn" (click)="KayitSil(item.ref_no)" style="cursor: pointer">delete</mat-icon>
+                </td>
+                <td>{{item.ref_no}}</td>
+                <td>{{item.ihale_cari_kodu}}</td>
+                <td>{{item.hasta_adi}}</td>
+                <td>{{item.cekim_tarihi | date:'dd/MM/yyyy' }}</td>
+                <td>{{item.islem_adi}}</td>
+            </tr>
+        </tbody>
+        <tfoot>
+            <tr>
+                <th></th>
+                <th>Referans No</th>
+                <th>İhale Cari Kodu</th>
+                <th>Hasta Adı</th>
+                <th>Çekim Tarihi</th>
+                <th>İşlem Adı</th>
+            </tr>
+        </tfoot>
+    </table>
 </div>

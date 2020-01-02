@@ -20,9 +20,6 @@ import { DataTablesModule } from 'angular-datatables';
 import { LoginComponent } from './login/login.component';
 import { LogoutComponent } from './logout/logout.component';
 import { HomeComponent } from './home/home.component';
-import { registerLocaleData } from '@angular/common';
-import localeTr from '@angular/common/locales/tr'
-registerLocaleData(localeTr);
 
 @NgModule({
   declarations: [
@@ -58,7 +55,7 @@ registerLocaleData(localeTr);
     
   ],
   providers: [
-    {provide: LOCALE_ID, useValue: "tr"},
+    {provide: LOCALE_ID, useValue: "tr-TR"},
     RadyolojiIslemService
   ],
   bootstrap: [AppComponent]

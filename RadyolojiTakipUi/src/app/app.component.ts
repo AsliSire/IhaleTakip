@@ -2,6 +2,11 @@ import { Component } from '@angular/core';
 import { DatePipe } from '@angular/common';
 import { AuthenticationService } from './entity/service/authentication.service';
 import { VWPERSONEL } from './entity/model/vw-personel';
+import { registerLocaleData } from '@angular/common';
+import localeTr from '@angular/common/locales/tr';
+
+// the second parameter 'fr' is optional
+registerLocaleData(localeTr, 'tr');
 
 @Component({
   selector: 'app-root',
@@ -40,16 +45,15 @@ export class AppComponent {
 
     let hour = d.getHours();
     let minutes = d.getMinutes();
-    this.hour = hour + ':' + minutes;
+    this.hour = hour + ':' + minutes; 
     console.log(hour + ':' + minutes);
     if (month.length < 2) month = '0' + month;
     if (day.length < 2) day = '0' + day;
     return [year, month, day].join('-');
   }
-
-  logout() {
-    this.authenticationService.logout();
-  }
+ logout(){
+   this.authenticationService.logout();
+ }
 /*   public FormatHour(date) {
     const now = moment("2017-01-26T14:21:22+0000");
     const expiration = moment("2017-01-29T17:24:22+0000");

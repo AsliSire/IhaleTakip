@@ -37,6 +37,10 @@ export class RadyolojiIslemService {
     return this.http.get(environment.api_url + '/api/ihale-islem/getIhaleAdi?sicil_no=' + sicil_no, { responseType: 'json' })
   }
 
+  GetPersonelListesi(kadro) {
+    return this.http.get(environment.api_url + '/api/ihale-islem/getPersonelListesi?kadro=' + kadro, { responseType: 'json' })
+  }
+
   SaveRadyolojiIslem(ARadyolojiIslem: TblIhaleIslem) {
     var header = new HttpHeaders();
     header.append('Content-Type', 'application/json');
