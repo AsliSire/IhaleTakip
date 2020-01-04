@@ -159,6 +159,37 @@ namespace RadyolojiTakip.Controllers
             }
         }
 
+        [HttpGet("getPersonelListesi")] //rec_id ile satır çekme 
+        public IActionResult GetPersonelListesi(string kadro)
+        {
+            try
+            {
+                if (kadro != "")
+                {
+                    var conn = new SqlConnection(Baglanti());
+                    string SQL = @" SELECT ad_soyad FROM tbl_personel WHERE kadro = @kadro";
+                    var prm = new { kadro = kadro };
+                    try
+                    {
+                        var db_rows = conn.Query<WebApiCore.Data.RadyolojiTakip.vw_personel>(SQL, prm);
+                        return Ok(db_rows);
+                    }
+                    catch (Exception xp1)
+                    {
+                        return BadRequest(xp1.Message);
+                    }
+                }
+                else
+                {
+                    return BadRequest("Personel Bilgisi Bulunamadı.");
+                }
+            }
+            catch (Exception xp1)
+            {
+                return BadRequest(xp1.Message);
+            }
+        }
+
         private object SQLServerDate(Func<string> baglanti)
         {
             throw new NotImplementedException();

@@ -12,3 +12,17 @@ C:\PROJELER\AKILLI_WEB\WebApiCore\WebApiCore\obj\Release\netcoreapp2.2\WebApiCor
 C:\PROJELER\AKILLI_WEB\WebApiCore\WebApiCore\obj\Release\netcoreapp2.2\WebApiCore.RazorTargetAssemblyInfo.cache
 C:\PROJELER\AKILLI_WEB\WebApiCore\WebApiCore\obj\Release\netcoreapp2.2\WebApiCore.dll
 C:\PROJELER\AKILLI_WEB\WebApiCore\WebApiCore\obj\Release\netcoreapp2.2\WebApiCore.pdb
+D:\Projects\WebApiCore\WebApiCore\bin\Release\netcoreapp2.2\WebApiCore.deps.json
+D:\Projects\WebApiCore\WebApiCore\bin\Release\netcoreapp2.2\WebApiCore.runtimeconfig.json
+D:\Projects\WebApiCore\WebApiCore\bin\Release\netcoreapp2.2\WebApiCore.runtimeconfig.dev.json
+D:\Projects\WebApiCore\WebApiCore\bin\Release\netcoreapp2.2\WebApiCore.dll
+D:\Projects\WebApiCore\WebApiCore\bin\Release\netcoreapp2.2\WebApiCore.pdb
+D:\Projects\WebApiCore\WebApiCore\obj\Release\netcoreapp2.2\WebApiCore.csprojAssemblyReference.cache
+D:\Projects\WebApiCore\WebApiCore\obj\Release\netcoreapp2.2\WebApiCore.csproj.CoreCompileInputs.cache
+D:\Projects\WebApiCore\WebApiCore\obj\Release\netcoreapp2.2\WebApiCore.RazorAssemblyInfo.cache
+D:\Projects\WebApiCore\WebApiCore\obj\Release\netcoreapp2.2\WebApiCore.RazorAssemblyInfo.cs
+D:\Projects\WebApiCore\WebApiCore\obj\Release\netcoreapp2.2\WebApiCore.AssemblyInfoInputs.cache
+D:\Projects\WebApiCore\WebApiCore\obj\Release\netcoreapp2.2\WebApiCore.AssemblyInfo.cs
+D:\Projects\WebApiCore\WebApiCore\obj\Release\netcoreapp2.2\WebApiCore.RazorTargetAssemblyInfo.cache
+D:\Projects\WebApiCore\WebApiCore\obj\Release\netcoreapp2.2\WebApiCore.dll
+D:\Projects\WebApiCore\WebApiCore\obj\Release\netcoreapp2.2\WebApiCore.pdb
