@@ -1,0 +1,42 @@
+
+<div class="dtable">
+  <form [formGroup]="fg_datefilter" (ngSubmit)="TarihleAra(baslangic_tarihi.value,bitis_tarihi.value)"
+    class="md-float-material" novalidate>
+    <div class="row">
+        <div class="input-group input-group-primary input-group-sm col-sm-12 col-md-5 col-lg-5">
+            <input id="baslangic_tarihi" name="baslangic_tarihi" formControlName="baslangic_tarihi" #baslangic_tarihi
+                type="date" class="input-sm form-control thresold-i col-sm-5 col-md-5 col-lg-5" autocomplete="off">
+            <input id="bitis_tarihi" name="bitis_tarihi" formControlName="bitis_tarihi" #bitis_tarihi type="date"
+                class="input-sm form-control thresold-i col-sm-5 col-md-5 col-lg-5" autocomplete="off">
+            <button mat-raised-button color="warn" type="submit"
+                class="input-sm form-control thresold-i col-sm-2 col-md-2 col-lg-2">
+                <mat-icon title="Filtrele">filter_list</mat-icon>
+            </button>
+        </div>
+    </div>
+</form>
+  <table id="dtable" datatable [dtOptions]="dtOptions" [dtTrigger]="dtTrigger" class="row-border hover">
+    <thead>
+      <tr>
+        <th>İşlemler</th>
+        <th>Tarih</th>
+        <th>Satış Temsilcisi</th>
+        <th>Açıklama</th>
+        <th>Depo Tutarı</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let item of depofiyatlamalistesi">
+        <td style="width: 4em;">
+          <mat-icon (click)="KayitDuzenle(item.ref_no)" style="cursor: pointer; color: royalblue;">edit
+          </mat-icon>
+          <mat-icon class="mat-blue"  (click)="KayitSil(item.ref_no)" style="cursor: pointer; color: orangered;">delete</mat-icon>
+        </td>
+        <td>{{ item.tarih | date:'dd/MM/yyyy' }}</td>
+        <td>{{ item.satis_temsilcisi }}</td>
+        <td>{{ item.aciklama }}</td>
+        <td>{{ item.depo_tutari }}</td>
+      </tr>
+    </tbody>
+  </table>
+</div>

@@ -1,18 +1,20 @@
 import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
+import { environment } from 'src/environments/environment';
 
 @Component({
-  selector: 'app-logout',
-  templateUrl: './logout.component.html'
+  selector: 'logout',
+  templateUrl: './logout.component.html',
+  styleUrls: ['./logout.component.css']
 })
 export class LogoutComponent implements OnInit {
 
-  constructor(private router: Router) { }
+  constructor() { }
 
   ngOnInit() {
     localStorage.removeItem('currentUser');
-    //this.router.navigate(["/giris"]);
-    window.location.href = window.location.origin + '/giris';
+    let url1 = window.location.origin + '/' + 'giris';
+    if (environment.base_url != '') url1 = window.location.origin + environment.base_url + 'giris';
+    console.log('URL1 = ' + url1);
+    window.location.href = url1;
   }
-
 }

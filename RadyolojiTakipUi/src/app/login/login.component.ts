@@ -1,13 +1,15 @@
-import { Component, OnInit } from '@angular/core';
-import { FormGroup, FormBuilder, Validators } from '@angular/forms';
-import { ActivatedRoute, Router } from '@angular/router';
-import { AuthenticationService } from '../entity/service/authentication.service';
-import { User } from '../entity/model/user';
-import { first } from 'rxjs/operators';
+﻿import { Component, OnInit } from "@angular/core";
+import { Router, ActivatedRoute } from "@angular/router";
+import { FormBuilder, FormGroup, Validators } from "@angular/forms";
+import { first } from "rxjs/operators";
+
+import { User } from "../_models/user";
+import { AuthenticationService } from "../_services/authentication.service";
+import { environment } from 'src/environments/environment';
 
 @Component({
-  selector: 'app-login',
-  templateUrl: './login.component.html'
+  selector: 'giris',
+  templateUrl: "login.component.html"
 })
 
 export class LoginComponent implements OnInit {
@@ -23,21 +25,24 @@ export class LoginComponent implements OnInit {
     private router: Router,
     private authenticationService: AuthenticationService
   ) {
+
     localStorage.removeItem('currentUser');
+
     // redirect to home if already logged in
-    // if (this.authenticationService.currentUserValue) {
-    //   this.router.navigate(["/"]);
-    // }
+    //if (this.authenticationService.currentUserValue) {
+    //  this.router.navigate(["/"]);
+    //}
   }
 
-
   ngOnInit() {
+
     localStorage.removeItem('currentUser');
 
     this.loginForm = this.formBuilder.group({
       username: ["", Validators.required],
       password: ["", Validators.required]
     });
+
     // get return url from route parameters or default to '/'
     this.returnUrl = this.route.snapshot.queryParams["returnUrl"] || "/";
   }
@@ -61,10 +66,11 @@ export class LoginComponent implements OnInit {
       .pipe(first())
       .subscribe(
         (user: User) => {
-
-          console.log(this.returnUrl);
-          this.router.navigate(['/index.html']);
-        },
+          let url1 = window.location.origin + '/' + '';
+          if (environment.base_url != '') url1 = window.location.origin + environment.base_url + '';
+          console.log('URL1 = ' + url1);
+          window.location.href = url1;
+              },
         error => {
           this.error = error;
           this.loading = false;

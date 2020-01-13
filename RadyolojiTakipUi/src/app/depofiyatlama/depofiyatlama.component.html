@@ -1,0 +1,685 @@
+<br>
+<div class="container">
+  <div class="card-deck mb-3">
+
+    <div class="card mb-4 shadow-sm">
+      <div class="card-header" style="background-color: #ffc107;">
+        <h4 class="my-0 font-weight-normal">Modüler Su Deposu Fiyat Hesaplama Ekranı/Moduler Water Tank Pricing</h4>
+      </div>
+      <div class="card-body">
+
+        <form [formGroup]="tanimform" (ngSubmit)="DepoFiyatSave()" class="form-horizontal" novalidate>
+          <input id="hdnori" name="hdnori" formControlName="hdnori" #depoen type="hidden">
+
+          <div class="row">
+            <div class="col-md-3 mb-3">
+              <label for="depotipi">Depo Tipi / Tank Type</label>
+              <select (change)="SecimDepo(depotipi.value)" id="depotipi" name="depotipi" formControlName="depotipi"
+                #depotipi class="custom-select d-block w-100" class="custom-select d-block w-100" autocomplete="off">
+                <option value="">Seçiniz</option>
+                <!-- <option *ngFor="let itm of ilceler">{{itm.tanim}}</option> -->
+                <option>KROM 304</option>
+                <option>KROM 316</option>
+                <option>Daldırma Galvaniz/Hot Deep</option>
+                <option>Hazır Galvaniz/PreGalvanized</option>
+              </select>
+              <div class="invalid-feedback">
+                Valid last name is required.
+              </div>
+            </div>
+            <div class="col-md-2 mb-3">
+              <label for="depoen">En / Width</label>
+              <input (change)="HacimHesapla(depoen.value,depoboy.value, depokatsayisi.value)" id="depoen" name="depoen"
+                formControlName="depoen" #depoen type="text" class="form-control" autocomplete="off">
+
+              <input [attr.disabled]="true" id="depoenalt" name="depoenalt" formControlName="depoenalt" #depoenalt
+                type="text" class="form-control">
+
+              <div class="invalid-feedback">
+                Valid last name is required.
+              </div>
+            </div>
+
+            <div class="col-md-2 mb-3">
+              <label for="depoboy">Boy / Length</label>
+              <input (change)="HacimHesapla(depoen.value,depoboy.value, depokatsayisi.value)" id="depoboy"
+                name="depoboy" formControlName="depoboy" #depoboy type="text" class="form-control" autocomplete="off">
+              <input [attr.disabled]="true" id="depoboyalt" name="depoboyalt" formControlName="depoboyalt" #depoboyalt
+                type="text" class="form-control">
+              <div class="invalid-feedback">
+                Valid last name is required.
+              </div>
+            </div>
+
+            <div class="col-md-2 mb-3">
+              <label for="depokatsayisi">Depo Kat Sayısı / Floor</label>
+              <select (change)="HacimHesapla(depoen.value,depoboy.value, depokatsayisi.value)" id="depokatsayisi"
+                name="depokatsayisi" formControlName="depokatsayisi" #depokatsayisi class="custom-select d-block w-100"
+                autocomplete="off">
+                <option value="">Seçiniz</option>
+                <option>1</option>
+                <option>1.5</option>
+                <option>2</option>
+                <option>2.5</option>
+                <option>3</option>
+                <option>4</option>
+              </select>
+              <div class="invalid-feedback">
+                Valid last name is required.
+              </div>
+            </div>
+
+            <div class="col-md-2 mb-3">
+              <label for="depohacim">Hacim / Volume</label>
+              <input [attr.disabled]="true" id="depohacim" name="depohacim" formControlName="depohacim" #depohacim
+                type="text" class="form-control">
+
+              <div class="invalid-feedback">
+                Valid last name is required.
+              </div>
+            </div>
+
+          </div>
+
+          <div class="row">
+            <div class="col-md-12 mb-3">
+              <label for="aciklama">Açıklama</label>
+              <input id="aciklama" name="aciklama" formControlName="aciklama" #aciklama type="textarea"
+                class="form-control" autocomplete="off">
+            </div>
+          </div>
+
+          <!-- buraya kadar hacim hesaplama bölümü -->
+          <div class="card-header" style="background-color: #ffc107;">
+            <h4 class="my-0 font-weight-normal">Depo Kalınlıkları / Manşonlar</h4>
+          </div>
+          <div class="card-body">
+            <!--buradan sonra iki kolonlu tablo açmam gerekiyor.. depo kat kalınlıkları için ve manşonlar için-->
+            <div class="row">
+              <div class="col-md-4 mb-3">
+
+                <label for="tabankalinlik">Depo Taban Kalınlık / Bottom Tickness</label>
+                <input id="tabankalinlik" name="tabankalinlik" formControlName="tabankalinlik" #tabankalinlik
+                  type="text" class="form-control" autocomplete="off">
+                <div class="invalid-feedback">
+                  Valid last name is required.
+                  <!-- </div> -->
+                </div>
+
+                <label for="tavankalinlik">Depo Tavan Kalınlık / Top Tickness</label>
+                <input id="tavankalinlik" name="tavankalinlik" formControlName="tavankalinlik" #tavankalinlik
+                  type="text" class="form-control" autocomplete="off">
+                <div class="invalid-feedback">
+                  Valid last name is required.
+                </div>
+
+                <label for="kalinlik1">Depo 1.Kat Kalınlık / 1.Floor Tickness</label>
+                <input id="kalinlik1" name="kalinlik1" formControlName="kalinlik1" #kalinlik1 type="text"
+                  class="form-control" autocomplete="off">
+                <div class="invalid-feedback">
+                  Valid last name is required.
+                </div>
+
+                <label for="kalinlik15">Depo 1.5 Kat Kalınlık / 1.5Floor Tickness</label>
+                <input id="kalinlik15" name="kalinlik15" formControlName="kalinlik15" #kalinlik15 type="text"
+                  class="form-control" [value]="(depokatsayisi_value === 1.5) ? kalinlik15.value :'' "
+                  [readonly]="depokatsayisi_value < 1.5 " autocomplete="off">
+                <div class="invalid-feedback">
+                  Valid last name is required.
+                </div>
+
+                <label for="kalinlik2">Depo 2.Kat Kalınlık / 2.Floor Tickness</label>
+                <input id="kalinlik2" name="kalinlik2" formControlName="kalinlik2" #kalinlik2 type="text"
+                  class="form-control" [readonly]="depokatsayisi_value < 2" autocomplete="off">
+                <div class="invalid-feedback">
+                  Valid last name is required.
+                </div>
+
+                <label for="kalinlik25">Depo 2.5.Kat Kalınlık / 2.5.Floor Tickness</label>
+                <input id="kalinlik25" name="kalinlik25" formControlName="kalinlik25" #kalinlik25 type="text"
+                  class="form-control" [value]="(depokatsayisi_value === 2.5) ? kalinlik15.value :'' "
+                  [readonly]="depokatsayisi_value < 2.5 || depokatsayisi_value > 2.5" autocomplete="off">
+                <div class="invalid-feedback">
+                  Valid last name is required.
+                </div>
+
+                <label for="kalinlik3">Depo 3.Kat Kalınlık / 3.Floor Tickness</label>
+                <input id="kalinlik3" name="kalinlik3" formControlName="kalinlik3" #kalinlik3 type="text"
+                  class="form-control" [readonly]="depokatsayisi_value < 3" autocomplete="off">
+                <div class="invalid-feedback">
+                  Valid last name is required.
+                </div>
+
+                <label for="kalinlik35">Depo 3.5.Kat Kalınlık / 3.Floor Tickness</label>
+                <input id="kalinlik35" name="kalinlik35" formControlName="kalinlik35" #kalinlik35 type="text"
+                  class="form-control" [readonly]="depokatsayisi_value < 3" autocomplete="off">
+                <div class="invalid-feedback">
+                  Valid last name is required.
+                </div>
+
+                <label for="kalinlik4">Depo 4.Kat Kalınlık / 4.Floor Tickness</label>
+                <input id="kalinlik4" name="kalinlik4" formControlName="kalinlik4" #kalinlik4 type="text"
+                  class="form-control" [readonly]="depokatsayisi_value < 4" autocomplete="off">
+                <div class="invalid-feedback">
+                  Valid last name is required.
+                </div>
+              </div>
+
+
+              <div class="col-md-4 mb-3">
+
+                <label for="giriscap">Manşon Giriş Çap / Inlet Diameter</label>
+                <input id="giriscap" name="giriscap" formControlName="giriscap" #giriscap type="text"
+                  class="form-control" autocomplete="off">
+                <div class="invalid-feedback">
+                  Valid last name is required.
+                </div>
+
+                <label for="cikiscap">Çıkış Çap / Outlet Diameter</label>
+                <input id="cikiscap" name="cikiscap" formControlName="cikiscap" #cikiscap type="text"
+                  class="form-control" autocomplete="off">
+                <div class="invalid-feedback">
+                  Valid last name is required.
+                </div>
+
+                <label for="bosaltmacap">Boşaltma Çap / Drainage Diameter</label>
+                <input id="bosaltmacap" name="bosaltmacap" formControlName="bosaltmacap" #bosaltmacap type="text"
+                  class="form-control" autocomplete="off">
+                <div class="invalid-feedback">
+                  Valid last name is required.
+                </div>
+
+                <label for="tasmacap">Taşma Çap / Overflow Diameter</label>
+                <input id="tasmacap" name="tasmacap" formControlName="tasmacap" #tasmacap type="text"
+                  class="form-control" autocomplete="off">
+                <div class="invalid-feedback">
+                  Valid last name is required.
+                </div>
+
+                <label for="mansonekstracap">Manşon Ekstra Çap / Extra Diameter</label>
+                <input id="mansonekstracap" name="mansonekstracap" formControlName="mansonekstracap" #mansonekstracap
+                  type="text" class="form-control" autocomplete="off">
+                <div class="invalid-feedback">
+                  Valid last name is required.
+                </div>
+              </div>
+
+              <div class="col-md-4 mb-3">
+
+                <label for="girisadet">Giriş Adet / Intake Pcs</label>
+                <input id="girisadet" name="girisadet" formControlName="girisadet" #girisadet type="text"
+                  class="form-control" autocomplete="off">
+                <div class="invalid-feedback">
+                  Valid last name is required.
+                </div>
+
+                <label for="cikisadet">Çıkış Adet / Outlet Pcs</label>
+                <input id="cikisadet" name="cikisadet" formControlName="cikisadet" #cikisadet type="text"
+                  class="form-control" autocomplete="off">
+                <div class="invalid-feedback">
+                  Valid last name is required.
+                </div>
+
+                <label for="bosaltmaadet">Boşaltma Adet / Drainage Pcs</label>
+                <input id="bosaltmaadet" name="bosaltmaadet" formControlName="bosaltmaadet" #bosaltmaadet type="text"
+                  class="form-control" autocomplete="off">
+                <div class="invalid-feedback">
+                  Valid last name is required.
+                </div>
+
+                <label for="tasmaadet">Taşma Adet / Overflow Pcs</label>
+                <input id="tasmaadet" name="tasmaadet" formControlName="tasmaadet" #tasmaadet type="text"
+                  class="form-control" autocomplete="off">
+                <div class="invalid-feedback">
+                  Valid last name is required.
+                </div>
+
+                <label for="ekstraadet">Ekstra Adet / Extra Pcs</label>
+                <input id="ekstraadet" name="ekstraadet" formControlName="ekstraadet" #ekstraadet type="text"
+                  class="form-control" autocomplete="off">
+                <div class="invalid-feedback">
+                  Valid last name is required.
+                </div>
+              </div>
+            </div>
+            <!-- ikinci kolon div bitişi **************************************************************************-->
+            <button type="button" (click)="DepoFiyatHesapla(tanimform.value)"
+              class="btn btn-lg btn-block btn-primary">Hesapla / Calculate</button>
+            <br />
+          </div>
+          <!-- #region Nakliye hariç fiyat -->
+
+          <div class="card-header">
+            <h4 class="my-0 font-weight-normal">Nakliye Hariç Depo Fiyatı / Transportation Excluded Water Tank Price
+            </h4>
+          </div>
+          <div class="card-body">
+            <div class="row">
+              <div class="col-md-3 mb-3">
+                <label for="depofiyatitl">Depo Fiyatı TL (Nakliye Hariç)</label>
+                <input [attr.disabled]="true" id="depofiyatitl" name="depofiyatitl" formControlName="depofiyatitl"
+                  #depofiyatitl type="text" class="form-control">
+              </div>
+              <div class="col-md-3 mb-3">
+                <label for="depofiyatiusd">Depo Fiyatı USD (Nakliye Hariç)</label>
+                <input [attr.disabled]="true" id="depofiyatiusd" name="depofiyatiusd" formControlName="depofiyatiusd"
+                  #depofiyatiusd type="text" class="form-control">
+              </div>
+              <div class="col-md-3 mb-3">
+                <label for="iskontoorani">İskonto Oranı</label>
+                <input [attr.disabled]="true" id="iskontoorani" name="iskontoorani" formControlName="iskontoorani"
+                  #iskontoorani type="text" class="form-control">
+              </div>
+              <div class="col-md-3 mb-3">
+                <label for="iskontotutari">İskonto Tutarı</label>
+                <input [attr.disabled]="true" id="iskontotutari" name="iskontotutari" formControlName="iskontotutari"
+                  #iskontotutari type="text" class="form-control">
+              </div>
+            </div>
+          </div>
+          <!-- #endregion Nakliye hariç fiyat -->
+
+          <div class="card-header">
+            <h4 class="my-0 font-weight-normal">Şehire Göre Fiyatlama Bölümü / Transpotration Cost (For Turkey Only)
+            </h4>
+          </div>
+          <div class="card-body">
+            <div class="row">
+
+              <div class="col-md-3 mb-3">
+                <label for="sehir">Şehir</label>
+                <select (change)="SecimSehir(sehir.value)" id="sehir" name="sehir" formControlName="sehir" #sehir
+                  class="custom-select d-block w-100" id="country" required="">
+                  <option value="">Seçiniz</option>
+                  <option *ngFor="let item of sehirler">{{item.tanim}}</option>
+                </select>
+                <div class="invalid-feedback">
+                  Valid first name is required
+                </div>
+              </div>
+
+              <div class="col-md-3 mb-3">
+                <label for="nakliyebedeli">Nakliye Bedeli</label>
+                <input [attr.disabled]="true" id="nakliyebedeli" name="nakliyebedeli" formControlName="nakliyebedeli"
+                  #nakliyebedeli type="text" class="form-control">
+                <div class="invalid-feedback">
+                  Valid last name is required.
+                </div>
+              </div>
+
+              <div class="col-md-3 mb-3">
+                <label for="nakliyelidepofiyatitl">Nakliye Dahil Depo Fiyatı TL</label>
+                <input [attr.disabled]="true" id="nakliyelidepofiyatitl" name="nakliyelidepofiyatitl"
+                  formControlName="nakliyelidepofiyatitl" #nakliyelidepofiyatitl type="text" class="form-control">
+              </div>
+            </div>
+          </div>
+
+          <button type="submit" class="btn btn-lg btn-block btn-success m-b-3">Kaydet / Save</button>
+          <br />
+
+          <div *ngIf="isExx" class="card-header" style="background-color: #ffc107;">
+            <h4 class="my-0 font-weight-normal">Malzeme Fiyatları / Material Prices</h4>
+          </div>
+          <!--#region Hesaplamalar-->
+          <div *ngIf="isExx" class="card-body">
+
+            <div *ngIf="isExx" class="row">
+
+              <div class="col-md-3 mb-3">
+                <label for="civatabirimfiyati">Civata Birim Fiyatı</label>
+                <input [attr.disabled]="true" id="civatabirimfiyati" name="civatabirimfiyati"
+                  formControlName="civatabirimfiyati" #civatabirimfiyati type="text" class="form-control">
+                <div class="invalid-feedback">
+                  Valid last name is required.
+                </div>
+              </div>
+
+              <div class="col-md-3 mb-3">
+                <label for="sacbirimfiyati">Sac Birim Fiyatı</label>
+                <input [attr.disabled]="true" id="sacbirimfiyati" name="sacbirimfiyati" formControlName="sacbirimfiyati"
+                  #sacbirimfiyati type="text" class="form-control">
+                <div class="invalid-feedback">
+                  Valid last name is required.
+                </div>
+              </div>
+
+              <div class="col-md-3 mb-3">
+                <label for="montajgideri">Montaj Gideri</label>
+                <input [attr.disabled]="true" id="montajgideri" name="montajgideri" formControlName="montajgideri"
+                  #montajgideri type="text" class="form-control">
+                <div class="invalid-feedback">
+                  Valid last name is required.
+                </div>
+              </div>
+
+              <div class="col-md-3 mb-3">
+                <label for="mansonbirimfiyati">Manşon Birim Fiyatı</label>
+                <input [attr.disabled]="true" id="mansonbirimfiyati" name="mansonbirimfiyati"
+                  formControlName="mansonbirimfiyati" #mansonbirimfiyati type="text" class="form-control">
+                <div class="invalid-feedback">
+                  Valid last name is required.
+                </div>
+              </div>
+
+              <div class="col-md-3 mb-3">
+                <label for="usdkur">Usd Kur</label>
+                <input [attr.disabled]="true" id="usdkur" name="usdkur" formControlName="usdkur" #usdkur type="text"
+                  class="form-control">
+                <div class="invalid-feedback">
+                  Valid last name is required.
+                </div>
+              </div>
+
+              <div class="col-md-3 mb-3">
+                <label for="uretimgideri">Üretim Gideri</label>
+                <input [attr.disabled]="true" id="uretimgideri" name="uretimgideri" formControlName="uretimgideri"
+                  #uretimgideri type="text" class="form-control">
+
+                <div class="invalid-feedback">
+                  Valid last name is required.
+                </div>
+              </div>
+
+              <div class="col-md-3 mb-3">
+                <label for="modulsayisi">Modul Sayısı</label>
+                <input [attr.disabled]="true" id="modulsayisi" name="modulsayisi" formControlName="modulsayisi"
+                  #modulsayisi type="text" class="form-control">
+                <div class="invalid-feedback">
+                  Valid last name is required.
+                </div>
+              </div>
+
+              <div class="col-md-3 mb-3">
+                <label for="yarimodulsayisi">Yarı Modul Sayısı</label>
+                <input [attr.disabled]="true" id="yarimodulsayisi" name="yarimodulsayisi"
+                  formControlName="yarimodulsayisi" #yarimodulsayisi type="text" class="form-control" placeholder=""
+                  required="">
+              </div>
+
+              <div class="col-md-3 mb-3">
+                <label for="modulagirlik">Modul Agırlık</label>
+                <input [attr.disabled]="true" id="modulagirlik" name="modulagirlik" formControlName="modulagirlik"
+                  #modulagirlik type="text" class="form-control">
+              </div>
+
+              <div class="col-md-3 mb-3">
+                <label for="yarimodulagirlik">Yarı Modul Ağırlık</label>
+                <input [attr.disabled]="true" id="yarimodulagirlik" name="yarimodulagirlik"
+                  formControlName="yarimodulagirlik" #yarimodulagirlik type="text" class="form-control">
+              </div>
+
+              <div class="col-md-3 mb-3">
+                <label for="tabansayisi">Taban Sayısı</label>
+                <input [attr.disabled]="true" id="tabansayisi" name="tabansayisi" formControlName="tabansayisi"
+                  #tabansayisi type="text" class="form-control">
+              </div>
+
+              <div class="col-md-3 mb-3">
+                <label for="tavansayisi">Tavan Sayısı</label>
+                <input [attr.disabled]="true" id="tavansayisi" name="tavansayisi" formControlName="tavansayisi"
+                  #tavansayisi type="text" class="form-control">
+              </div>
+
+              <div class="col-md-3 mb-3">
+                <label for="tabanagirlik">Taban Ağırlık</label>
+                <input [attr.disabled]="true" id="tabanagirlik" name="tabanagirlik" formControlName="tabanagirlik"
+                  #tabanagirlik type="text" class="form-control">
+              </div>
+
+              <div class="col-md-3 mb-3">
+                <label for="tavanagirlik">Tavan Ağırlık</label>
+                <input [attr.disabled]="true" id="tavanagirlik" name="tavanagirlik" formControlName="tavanagirlik"
+                  #tavanagirlik type="text" class="form-control">
+              </div>
+
+              <div class="col-md-3 mb-3">
+                <label for="tdksayisi">TDK sayısı</label>
+                <input [attr.disabled]="true" id="tdksayisi" name="tdksayisi" formControlName="tdksayisi" #tdksayisi
+                  type="text" class="form-control">
+              </div>
+
+              <div class="col-md-3 mb-3">
+                <label for="cdksayisi">CDK Sayısı</label>
+                <input [attr.disabled]="true" id="cdksayisi" name="cdksayisi" formControlName="cdksayisi" #cdksayisi
+                  type="text" class="form-control">
+              </div>
+
+              <div class="col-md-3 mb-3">
+                <label for="tdkagirlik">TDK Ağırlık</label>
+                <input [attr.disabled]="true" id="tdkagirlik" name="tdkagirlik" formControlName="tdkagirlik" #tdkagirlik
+                  type="text" class="form-control">
+              </div>
+
+              <div class="col-md-3 mb-3">
+                <label for="cdkagirlik">ÇDK Ağırlık</label>
+                <input [attr.disabled]="true" id="cdkagirlik" name="cdkagirlik" formControlName="cdkagirlik" #cdkagirlik
+                  type="text" class="form-control">
+              </div>
+
+              <div class="col-md-3 mb-3">
+                <label for="gergiagirlik">Gergi Ağırlık</label>
+                <input [attr.disabled]="true" id="gergiagirlik" name="gergiagirlik" formControlName="gergiagirlik"
+                  #gergiagirlik type="text" class="form-control">
+              </div>
+
+              <div class="col-md-3 mb-3">
+                <label for="dikmeagirlik">Dikme Ağırlık</label>
+                <input [attr.disabled]="true" id="dikmeagirlik" name="dikmeagirlik" formControlName="dikmeagirlik"
+                  #dikmeagirlik type="text" class="form-control">
+              </div>
+
+              <div class="col-md-3 mb-3">
+                <label for="merdivenbirimfiyati">Merdiven Fiyatı</label>
+                <input [attr.disabled]="true" id="merdivenbirimfiyati" name="merdivenbirimfiyati"
+                  formControlName="merdivenbirimfiyati" #merdivenbirimfiyati type="text" class="form-control">
+              </div>
+
+              <div class="col-md-3 mb-3">
+                <label for="gergisayisi">Gergi Sayısı</label>
+                <input [attr.disabled]="true" id="gergisayisi" name="gergisayisi" formControlName="gergisayisi"
+                  #gergisayisi type="text" class="form-control">
+              </div>
+
+              <div class="col-md-3 mb-3">
+                <label for="dikmesayisi">Dikme Sayısı</label>
+                <input [attr.disabled]="true" id="dikmesayisi" name="dikmesayisi" formControlName="dikmesayisi"
+                  #dikmesayisi type="text" class="form-control">
+              </div>
+
+              <div class="col-md-3 mb-3">
+                <label for="silikonsayisi">Silikon Sayisi</label>
+                <input [attr.disabled]="true" id="silikonsayisi" name="silikonsayisi" formControlName="silikonsayisi"
+                  #silikonsayisi type="text" class="form-control">
+              </div>
+
+              <div class="col-md-3 mb-3">
+                <label for="yapistiricisayisi">Yapıştırıcı Sayısı</label>
+                <input [attr.disabled]="true" id="yapistiricisayisi" name="yapistiricisayisi"
+                  formControlName="yapistiricisayisi" #yapistiricisayisi type="text" class="form-control">
+              </div>
+
+              <div class="col-md-3 mb-3">
+                <label for="civatasayisi">Civata Sayisi</label>
+                <input [attr.disabled]="true" id="civatasayisi" name="civatasayisi" formControlName="civatasayisi"
+                  #civatasayisi type="text" class="form-control">
+              </div>
+
+              <div class="col-md-3 mb-3">
+                <label for="lastiksayisi">Lastik Sayisi</label>
+                <input [attr.disabled]="true" id="lastiksayisi" name="lastiksayisi" formControlName="lastiksayisi"
+                  #lastiksayisi type="text" class="form-control">
+              </div>
+
+              <div class="col-md-3 mb-3">
+                <label for="ustkapakbirimfiyati">Üst Kapak Fiyatı</label>
+                <input [attr.disabled]="true" id="ustkapakbirimfiyati" name="ustkapakbirimfiyati"
+                  formControlName="ustkapakbirimfiyati" #ustkapakbirimfiyati type="text" class="form-control">
+              </div>
+
+              <div class="col-md-3 mb-3">
+                <label for="suseviyebirimfiyati">Su Seviye Göstergesi fy</label>
+                <input [attr.disabled]="true" id="suseviyebirimfiyati" name="suseviyebirimfiyati"
+                  formControlName="suseviyebirimfiyati" #suseviyebirimfiyati type="text" class="form-control">
+              </div>
+
+              <div class="col-md-3 mb-3">
+                <label for="kalinliklartoplami">Kalınlıklar Toplamı</label>
+                <input [attr.disabled]="true" id="kalinliklartoplami" name="kalinliklartoplami"
+                  formControlName="kalinliklartoplami" #kalinliklartoplami type="text" class="form-control">
+              </div>
+
+              <div class="col-md-3 mb-3">
+                <label for="ortmodulkalinlik">Ortalama Modül Kalınlık</label>
+                <input [attr.disabled]="true" id="ortmodulkalinlik" name="ortmodulkalinlik"
+                  formControlName="ortmodulkalinlik" #ortmodulkalinlik type="text" class="form-control">
+              </div>
+
+              <div class="col-md-3 mb-3">
+                <label for="tdkbirimfiyati">TDK birim fiyatı</label>
+                <input [attr.disabled]="true" id="tdkbirimfiyati" name="tdkbirimfiyati" formControlName="tdkbirimfiyati"
+                  #tdkbirimfiyati type="text" class="form-control">
+              </div>
+
+              <div class="col-md-3 mb-3">
+                <label for="cdkbirimfiyati">CDK birim fiyatı</label>
+                <input [attr.disabled]="true" id="cdkbirimfiyati" name="cdkbirimfiyati" formControlName="cdkbirimfiyati"
+                  #cdkbirimfiyati type="text" class="form-control">
+              </div>
+
+              <div class="col-md-3 mb-3">
+                <label for="gergibirimfiyati">Gergi birim fiyatı</label>
+                <input [attr.disabled]="true" id="gergibirimfiyati" name="gergibirimfiyati"
+                  formControlName="gergibirimfiyati" #gergibirimfiyati type="text" class="form-control">
+              </div>
+
+              <div class="col-md-3 mb-3">
+                <label for="dikmebirimfiyati">Dikme birim fiyatı</label>
+                <input [attr.disabled]="true" id="dikmebirimfiyati" name="dikmebirimfiyati"
+                  formControlName="dikmebirimfiyati" #dikmebirimfiyati type="text" class="form-control">
+              </div>
+
+              <div class="col-md-3 mb-3">
+                <label for="silikonbirimfiyati">Silikon birim fiyatı</label>
+                <input [attr.disabled]="true" id="silikonbirimfiyati" name="silikonbirimfiyati"
+                  formControlName="silikonbirimfiyati" #silikonbirimfiyati type="text" class="form-control">
+              </div>
+
+              <div class="col-md-3 mb-3">
+                <label for="yapistiricibirimfiyati">Yapıştırıcı birim fiyatı</label>
+                <input [attr.disabled]="true" id="yapistiricibirimfiyati" name="yapistiricibirimfiyati"
+                  formControlName="yapistiricibirimfiyati" #yapistiricibirimfiyati type="text" class="form-control">
+              </div>
+
+              <div class="col-md-3 mb-3">
+                <label for="lastikbirimfiyati">Lastik birim fiyatı</label>
+                <input [attr.disabled]="true" id="lastikbirimfiyati" name="lastikbirimfiyati"
+                  formControlName="lastikbirimfiyati" #lastikbirimfiyati type="text" class="form-control">
+              </div>
+
+            </div>
+          </div>
+
+          <!--#endregion Hesaplamalar-->
+          <!--#region Tutarlar-->
+          <div *ngIf="isExx" class="card-header" style="background-color: #ffc107;">
+            <h4 class="my-0 font-weight-normal">Tutarlar</h4>
+          </div>
+          <div *ngIf="isExx" class="card-body">
+
+            <div class="row">
+              <div class="col-md-3 mb-3">
+                <label for="modultutari">Modul Tutarı</label>
+                <input [attr.disabled]="true" id="modultutari" name="modultutari" formControlName="modultutari"
+                  #modultutari type="text" class="form-control">
+              </div>
+              <div class="col-md-3 mb-3">
+                <label for="yarimodultutari">Yarı Modul Tutarı</label>
+                <input [attr.disabled]="true" id="yarimodultutari" name="yarimodultutari"
+                  formControlName="yarimodultutari" #yarimodultutari type="text" class="form-control" placeholder=""
+                  required="">
+              </div>
+
+              <div class="col-md-3 mb-3">
+                <label for="tabantutari">Taban Tutarı</label>
+                <input [attr.disabled]="true" id="tabantutari" name="tabantutari" formControlName="tabantutari"
+                  #tabantutari type="text" class="form-control">
+              </div>
+
+              <div class="col-md-3 mb-3">
+                <label for="tavantutari">Tavan Tutarı</label>
+                <input [attr.disabled]="true" id="tavantutari" name="tavantutari" formControlName="tavantutari"
+                  #tavantutari type="text" class="form-control">
+              </div>
+              <div class="col-md-3 mb-3">
+                <label for="tdktutari">Tdk Tutarı</label>
+                <input [attr.disabled]="true" id="tdktutari" name="tdktutari" formControlName="tdktutari" #tdktutari
+                  type="text" class="form-control">
+              </div>
+
+              <div class="col-md-3 mb-3">
+                <label for="cdktutari">Tdk Tutarı</label>
+                <input [attr.disabled]="true" id="cdktutari" name="cdktutari" formControlName="cdktutari" #cdktutari
+                  type="text" class="form-control">
+              </div>
+              <div class="col-md-3 mb-3">
+                <label for="cdktutari">Cdk Tutarı</label>
+                <input [attr.disabled]="true" id="cdktutari" name="cdktutari" formControlName="cdktutari" #cdktutari
+                  type="text" class="form-control">
+              </div>
+              <div class="col-md-3 mb-3">
+                <label for="gergitutari">Gergi Tutarı</label>
+                <input [attr.disabled]="true" id="gergitutari" name="gergitutari" formControlName="gergitutari"
+                  #gergitutari type="text" class="form-control">
+              </div>
+              <div class="col-md-3 mb-3">
+                <label for="dikmetutari">Dikme Tutarı</label>
+                <input [attr.disabled]="true" id="dikmetutari" name="dikmetutari" formControlName="dikmetutari"
+                  #dikmetutari type="text" class="form-control">
+              </div>
+
+              <div class="col-md-3 mb-3">
+                <label for="silikontutari">Silikon Tutarı</label>
+                <input [attr.disabled]="true" id="silikontutari" name="silikontutari" formControlName="silikontutari"
+                  #silikontutari type="text" class="form-control">
+              </div>
+              <div class="col-md-3 mb-3">
+                <label for="yapistiricitutari">Yapıştırıcı Tutarı</label>
+                <input [attr.disabled]="true" id="yapistiricitutari" name="yapistiricitutari"
+                  formControlName="yapistiricitutari" #yapistiricitutari type="text" class="form-control" placeholder=""
+                  required="">
+              </div>
+              <div class="col-md-3 mb-3">
+                <label for="civatatutari">Civata Tutarı</label>
+                <input [attr.disabled]="true" id="civatatutari" name="civatatutari" formControlName="civatatutari"
+                  #civatatutari type="text" class="form-control">
+              </div>
+              <div class="col-md-3 mb-3">
+                <label for="lastiktutari">Lastik Tutarı</label>
+                <input [attr.disabled]="true" id="lastiktutari" name="lastiktutari" formControlName="lastiktutari"
+                  #lastiktutari type="text" class="form-control">
+              </div>
+              <div class="col-md-3 mb-3">
+                <label for="mansontutari">Manşon Tutarı</label>
+                <input [attr.disabled]="true" id="mansontutari" name="mansontutari" formControlName="mansontutari"
+                  #mansontutari type="text" class="form-control">
+              </div>
+
+              <div class="col-md-3 mb-3">
+                <label for="nakliyetutari">Nakliye Tutarı</label>
+                <input [attr.disabled]="true" id="nakliyetutari" name="nakliyetutari" formControlName="nakliyetutari"
+                  #nakliyetutari type="text" class="form-control">
+              </div>
+              <div class="col-md-3 mb-3">
+                <label for="isciliktutari">İşçilik Tutarı</label>
+                <input [attr.disabled]="true" id="isciliktutari" name="isciliktutari" formControlName="isciliktutari"
+                  #isciliktutari type="text" class="form-control">
+              </div>
+            </div>
+          </div>
+          <!--#endregion Tutarlar-->
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
