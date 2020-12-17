@@ -43,7 +43,7 @@
     "@types/node": "~8.9.4",
     "angular-datatables": "^8.0.0",
     "codelyzer": "~4.5.0",
-    "datatables.net": "^1.10.20",
+    "datatables.net": "^1.10.22",
     "datatables.net-buttons": "^1.6.1",
     "datatables.net-buttons-dt": "^1.6.1",
     "datatables.net-dt": "^1.10.20",
